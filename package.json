@@ -11,6 +11,7 @@
   "license": "BSD",
   "dependencies": {
     "Set": "~0.4.0",
-    "heap": "~0.2.1"
+    "heap": "~0.2.1",
+    "dict_": "~1.1.1"
   }
 }
