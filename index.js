@@ -80,7 +80,7 @@ function aStar(params) {
   // all the neighbors of every accessible node have been exhausted,
   // or timeout has occurred.
   // path is impossible.
-  return undefined;
+  return null;
 }
 
 function reconstructPath(node) {
