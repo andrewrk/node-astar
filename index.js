@@ -1,9 +1,7 @@
 var assert = require('assert')
   , StringSet = require('Set')
   , Heap = require('heap')
-// once https://github.com/domenic/dict/pull/7
-// is pulled we can use that instead of this fork
-  , dict = require('dict_')
+  , dict = require('dict')
 
 module.exports = aStar;
 
@@ -30,7 +28,7 @@ function aStar(params) {
   openHeap.push(startNode);
   openDataMap.set(hash(startNode.data), startNode);
   var startTime = new Date();
-  while (openDataMap.size) {
+  while (openHeap.size()) {
     if (new Date() - startTime > params.timeout) break;
     var node = openHeap.pop();
     openDataMap.delete(hash(node.data));
