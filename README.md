@@ -6,11 +6,9 @@ Generic A* algorithm.
 
 ```js
 var aStar = require('a-star');
-var options = {
-  start: startNode,
-};
 // if this is going to take a while you may want to child_process.fork
 // and pass the results to the parent process
+// see below for options
 var path = aStar(options);
 console.log(path);
 ```
