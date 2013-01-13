@@ -1,6 +1,6 @@
 var assert = require('assert');
 //var Heap = require('heap').Heap;
-//var Set = require('Set');
+var Set = require('Set');
 
 
 module.exports = aStar;
@@ -148,104 +148,9 @@ Heap.prototype._siftUp = function(index) {
     this._siftDown(start_index, index);
 };
 
-
-/**
- * A Set datastructure. Note: only stores strings.
- *
- * NOTE: this class is broken if anyone adds methods to Object.prototype
- *
- * Examples:
- * var set = new Set(["a", "b"]);
- * set.contains("b"); // true
- * set.add("b"); // does nothing
- * set.remove("b");
- * set.contains("b"); // false
- * set.clear();
- * set.add("c");
- * set.size(); // 1
- * for (var value in set.values) {
- *     set.contains(value); // true
- * }
- */
-function Set(items) {
-    this.clear();
-    if (items !== undefined) {
-        for (var i = 0; i < items.length; i++) {
-            this.add(items[i]);
-        }
-    }
+function defaultHash(node) {
+  return node.toString();
 }
-
-Set.prototype.list = function() {
-    var all = [];
-    var val;
-    for (val in this.values) {
-        all.push(val);
-    }
-    return all;
-};
-
-/**
- * returns if the item wasn't already in the set.
- */
-Set.prototype.add = function(item) {
-    this._size = undefined;
-    var old_value = this.values[item];
-    this.values[item] = item;
-    return old_value === undefined;
-};
-Set.prototype.remove = function(item) {
-    this._size = undefined;
-    delete this.values[item];
-};
-Set.prototype.contains = function(item) {
-    return this.values[item] !== undefined;
-};
-Set.prototype.size = function() {
-    if (this._size === undefined) {
-        this._size = 0;
-        for (var item in this.values) {
-            this._size++;
-        }
-    }
-    return this._size;
-};
-Set.prototype.isEmpty = function() {
-    // don't need to use size
-    for (var item in this.values) {
-        return false;
-    }
-    return true;
-};
-Set.prototype.clear = function() {
-    this.values = {};
-    this._size = 0;
-};
-Set.prototype.equals = function(other) {
-    if (other.constructor !== Set) {
-        return false;
-    }
-    if (this.size() !== other.size()) {
-        return false;
-    }
-    for (var item in this.values) {
-        if (!other.contains(item)) {
-            return false;
-        }
-    }
-    return true;
-};
-
-Set.prototype.minus = function(other) {
-    var result = new Set();
-    for (var item in this.values) {
-        if (!other.contains(item)) {
-            result.add(item);
-        }
-    }
-    return result;
-};
-
 
 function aStar(params) {
   assert.ok(params.start !== undefined);
@@ -255,6 +160,7 @@ function aStar(params) {
   assert.ok(params.heuristic);
   if (params.timeout === undefined) params.timeout = Infinity;
   assert.ok(!isNaN(params.timeout));
+  var hash = params.hash || defaultHash;
 
   var start_node = {
     data: params.start,
@@ -278,11 +184,11 @@ function aStar(params) {
       return reconstruct_path(node);
     }
     // not done yet
-    closed_data_set.add(node.data);
+    closed_data_set.add(hash(node.data));
     var neighbors = params.neighbor(node.data);
     for (var i = 0; i < neighbors.length; i++) {
       var neighbor_data = neighbors[i];
-      if (closed_data_set.contains(neighbor_data)) {
+      if (closed_data_set.contains(hash(neighbor_data))) {
         // skip closed neighbors
         continue;
       }
