@@ -2,31 +2,41 @@
 
 Generic A* algorithm.
 
-*WORK IN PROGRESS*
-
 ## Usage
 
 ```js
-
+var aStar = require('a-star');
+var options = {
+  start: startNode,
+};
+// if this is going to take a while you may want to child_process.fork
+// and pass the results to the parent process
+var path = aStar(options);
+console.log(path);
 ```
 
 ## Documentation
 
-`aStar(options, callback)`
+`astar(options)`
 
-### callback(err, results)
+### Return Value
 
-`results` is an array of nodes including start and end, or `null` if no path
+Returns an array of nodes including start and end, or `null` if no path
 is found.
 
 ### options accepted
 
  * `start` - the start node
- * `isEnd` - (node) function that returns whether a node is an acceptable end
- * `neighbor` - (node) function that returns an array of neighbors for a node
- * `distance` - (a, b) function that returns the distance cost between two
+ * `isEnd` - function(node) that returns whether a node is an acceptable end
+ * `neighbor` - function(node) that returns an array of neighbors for a node
+ * `distance` - function(a, b) that returns the distance cost between two
    nodes
- * `heuristic` - (node) function that returns the heuristic guess for a node.
-   the smaller the better.
+ * `heuristic` - function(node) that returns a heuristic guess of the cost
+   from `node` to an end.
+ * `hash` - function(node) that returns a unique string for a node. this is
+   so that we can put nodes in heap and set data structures which are based
+   on plain old JavaScript objects. Defaults to using `node.toString`.
  * `timeout` - optional limit to amount of milliseconds to search before
    returning null.
+
+The data type for nodes is unrestricted.

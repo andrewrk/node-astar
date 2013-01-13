@@ -4,7 +4,7 @@
   "description": "Generic A* algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "node test/test.js"
   },
   "repository": "",
   "author": "Andrew Kelley",
@@ -12,8 +12,5 @@
   "dependencies": {
     "Set": "~0.4.0",
     "heap": "~0.2.1"
-  },
-  "devDependencies": {
-    "mocha": "~1.7.4"
   }
 }
