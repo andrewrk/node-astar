@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node test/test.js"
   },
-  "repository": "",
+  "repository": "git://github.com/superjoe30/node-astar.git",
   "author": "Andrew Kelley",
   "license": "BSD",
   "dependencies": {
