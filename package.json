@@ -1,6 +1,6 @@
 {
   "name": "a-star",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generic A* algorithm",
   "main": "index.js",
   "scripts": {
