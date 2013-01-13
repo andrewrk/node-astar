@@ -90,7 +90,7 @@ testPlane(50);
 /**
  * Tests navigating a maze.
  * @param maze Array of strings. '#' is wall, 's' is start, 'e' is end, anything else is floor. Maze must be bordered by '#' signs.
- * @param nodeCount The number of nodes in the answer including the start and the end, or undefined if the maze is impossible.
+ * @param nodeCount The number of nodes in the answer including the start and the end, or null if the maze is impossible.
  */
 function testMaze(maze, nodeCount) {
   // find the start and end positions
@@ -102,7 +102,7 @@ function testMaze(maze, nodeCount) {
       break;
     }
   }
-  assert.ok(start !== undefined);
+  assert.ok(start != null);
   var end;
   for (y = 0; y < maze.length; y++) {
     var endX = maze[y].indexOf("e");
@@ -111,7 +111,7 @@ function testMaze(maze, nodeCount) {
       break;
     }
   }
-  assert.ok(end !== undefined);
+  assert.ok(end != null);
 
   var path = aStar({
     start: start,
@@ -127,10 +127,10 @@ function testMaze(maze, nodeCount) {
       return euclideanDistance(xy, end);
     },
   });
-  if (nodeCount !== undefined) {
+  if (nodeCount != null) {
     assert.ok(path.length === nodeCount);
   } else {
-    assert.ok(path === undefined);
+    assert.ok(path == null);
   }
 }
 testMaze([
@@ -159,7 +159,7 @@ testMaze([
     "# ####### #",
     "#     #   #",
     "###########",
-], undefined);
+], null);
 
 // every 10 cells (including start) is marked by a digit
 testMaze([
