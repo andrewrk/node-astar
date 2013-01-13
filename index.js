@@ -17,48 +17,48 @@ function aStar(params) {
   assert.ok(!isNaN(params.timeout));
   var hash = params.hash || defaultHash;
 
-  var start_node = {
+  var startNode = {
     data: params.start,
     g: 0,
     h: params.heuristic(params.start),
   };
-  start_node.f = start_node.h;
+  startNode.f = startNode.h;
   // leave .parent undefined
-  var closed_data_set = new StringSet();
-  var open_heap = new Heap(heapComparator);
-  var open_data_map = dict();
-  open_heap.push(start_node);
-  open_data_map.set(hash(start_node.data), start_node);
-  var start_time = new Date();
-  while (open_data_map.size) {
-    if (new Date() - start_time > params.timeout) break;
-    var node = open_heap.pop();
-    open_data_map.delete(hash(node.data));
+  var closedDataSet = new StringSet();
+  var openHeap = new Heap(heapComparator);
+  var openDataMap = dict();
+  openHeap.push(startNode);
+  openDataMap.set(hash(startNode.data), startNode);
+  var startTime = new Date();
+  while (openDataMap.size) {
+    if (new Date() - startTime > params.timeout) break;
+    var node = openHeap.pop();
+    openDataMap.delete(hash(node.data));
     if (params.isEnd(node.data)) {
       // done
-      return reconstruct_path(node);
+      return reconstructPath(node);
     }
     // not done yet
-    closed_data_set.add(hash(node.data));
+    closedDataSet.add(hash(node.data));
     var neighbors = params.neighbor(node.data);
     for (var i = 0; i < neighbors.length; i++) {
-      var neighbor_data = neighbors[i];
-      if (closed_data_set.contains(hash(neighbor_data))) {
+      var neighborData = neighbors[i];
+      if (closedDataSet.contains(hash(neighborData))) {
         // skip closed neighbors
         continue;
       }
-      var g_from_this_node = node.g + params.distance(node.data, neighbor_data);
-      var neighbor_node = open_data_map.get(hash(neighbor_data));
+      var gFromThisNode = node.g + params.distance(node.data, neighborData);
+      var neighborNode = openDataMap.get(hash(neighborData));
       var update = false;
-      if (neighbor_node === undefined) {
+      if (neighborNode === undefined) {
         // add neighbor to the open set
-        neighbor_node = {
-          data: neighbor_data,
+        neighborNode = {
+          data: neighborData,
         };
         // other properties will be set later
-        open_data_map.set(hash(neighbor_data), neighbor_node);
+        openDataMap.set(hash(neighborData), neighborNode);
       } else {
-        if (neighbor_node.g < g_from_this_node) {
+        if (neighborNode.g < gFromThisNode) {
           // skip this one because another route is faster
           continue;
         }
@@ -66,14 +66,14 @@ function aStar(params) {
       }
       // found a new or better route.
       // update this neighbor with this node as its new parent
-      neighbor_node.parent = node;
-      neighbor_node.g = g_from_this_node;
-      neighbor_node.h = params.heuristic(neighbor_data);
-      neighbor_node.f = g_from_this_node + neighbor_node.h;
+      neighborNode.parent = node;
+      neighborNode.g = gFromThisNode;
+      neighborNode.h = params.heuristic(neighborData);
+      neighborNode.f = gFromThisNode + neighborNode.h;
       if (update) {
-        open_heap.heapify();
+        openHeap.heapify();
       } else {
-        open_heap.push(neighbor_node);
+        openHeap.push(neighborNode);
       }
     }
   }
@@ -83,11 +83,11 @@ function aStar(params) {
   return undefined;
 }
 
-function reconstruct_path(node) {
+function reconstructPath(node) {
   if (node.parent !== undefined) {
-    var path_so_far = reconstruct_path(node.parent);
-    path_so_far.push(node.data);
-    return path_so_far;
+    var pathSoFar = reconstructPath(node.parent);
+    pathSoFar.push(node.data);
+    return pathSoFar;
   } else {
     // this is the starting node
     return [node.data];
