@@ -20,6 +20,7 @@ function aStar(params) {
     g: 0,
     h: params.heuristic(params.start),
   };
+  var bestNode = startNode;
   startNode.f = startNode.h;
   // leave .parent undefined
   var closedDataSet = new StringSet();
@@ -29,12 +30,20 @@ function aStar(params) {
   openDataMap.set(hash(startNode.data), startNode);
   var startTime = new Date();
   while (openHeap.size()) {
-    if (new Date() - startTime > params.timeout) break;
+    if (new Date() - startTime > params.timeout) {
+      return {
+        status: 'timeout',
+        path: reconstructPath(bestNode),
+      };
+    }
     var node = openHeap.pop();
     openDataMap.delete(hash(node.data));
     if (params.isEnd(node.data)) {
       // done
-      return reconstructPath(node);
+      return {
+        status: 'success',
+        path: reconstructPath(node),
+      };
     }
     // not done yet
     closedDataSet.add(hash(node.data));
@@ -68,6 +77,7 @@ function aStar(params) {
       neighborNode.g = gFromThisNode;
       neighborNode.h = params.heuristic(neighborData);
       neighborNode.f = gFromThisNode + neighborNode.h;
+      if (neighborNode.h < bestNode.h) bestNode = neighborNode;
       if (update) {
         openHeap.heapify();
       } else {
@@ -75,10 +85,11 @@ function aStar(params) {
       }
     }
   }
-  // all the neighbors of every accessible node have been exhausted,
-  // or timeout has occurred.
-  // path is impossible.
-  return null;
+  // all the neighbors of every accessible node have been exhausted
+  return {
+    status: "noPath",
+    path: reconstructPath(bestNode),
+  };
 }
 
 function reconstructPath(node) {

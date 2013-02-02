@@ -1,7 +1,7 @@
 {
   "name": "a-star",
   "version": "0.0.2",
-  "description": "Generic A* algorithm",
+  "description": "Generic synchronous A* search algorithm",
   "main": "index.js",
   "scripts": {
     "test": "node test/test.js"

@@ -31,14 +31,15 @@ function arrayFiltered(array, func) {
  * The solution is [5, 4, 3, 2, 1, 0].
  */
 function testLinear() {
-  var path = aStar({
+  var results = aStar({
     start: 5,
     isEnd: function(n) { return n === 0; },
     neighbor: function(x) { return [x - 1, x + 1]; },
     distance: function(a, b) { return 1; },
     heuristic: function(x) { return x; },
   });
-  assert.ok(arraysEqual(path, [5, 4, 3, 2, 1, 0]));
+  assert.strictEqual(results.status, 'success');
+  assert.ok(arraysEqual(results.path, [5, 4, 3, 2, 1, 0]));
 }
 testLinear();
 
@@ -71,7 +72,7 @@ var rectilinearDistance = function(a, b) {
  */
 function testPlane(size) {
   var end = [0, 0];
-  var path = aStar({
+  var results = aStar({
     start: [size, size],
     isEnd: function(n) {return n[0] === end[0] && n[1] === end[1];},
     neighbor: planarNeighbors,
@@ -80,8 +81,9 @@ function testPlane(size) {
       return rectilinearDistance(xy, end);
     },
   });
+  assert.strictEqual(results.status, 'success');
   for (var i = size; i >= 0; i--) {
-    assert.ok(arraysEqual(path.shift(), [i, i]));
+    assert.ok(arraysEqual(results.path.shift(), [i, i]));
   }
 }
 testPlane(5);
@@ -92,7 +94,7 @@ testPlane(50);
  * @param maze Array of strings. '#' is wall, 's' is start, 'e' is end, anything else is floor. Maze must be bordered by '#' signs.
  * @param nodeCount The number of nodes in the answer including the start and the end, or null if the maze is impossible.
  */
-function testMaze(maze, nodeCount) {
+function testMaze(maze, nodeCount, closestNodeCount) {
   // find the start and end positions
   var start;
   for (var y = 0; y < maze.length; y++) {
@@ -113,7 +115,7 @@ function testMaze(maze, nodeCount) {
   }
   assert.ok(end != null);
 
-  var path = aStar({
+  var results = aStar({
     start: start,
     isEnd: function(n) {return n[0] === end[0] && n[1] === end[1];},
     neighbor: function(xy) {
@@ -128,9 +130,11 @@ function testMaze(maze, nodeCount) {
     },
   });
   if (nodeCount != null) {
-    assert.ok(path.length === nodeCount);
+    assert.strictEqual(results.status, 'success');
+    assert.strictEqual(results.path.length, nodeCount);
   } else {
-    assert.ok(path == null);
+    assert.strictEqual(results.status, 'noPath');
+    assert.strictEqual(results.path.length, closestNodeCount);
   }
 }
 testMaze([
@@ -159,7 +163,7 @@ testMaze([
     "# ####### #",
     "#     #   #",
     "###########",
-], null);
+], null, 4);
 
 // every 10 cells (including start) is marked by a digit
 testMaze([

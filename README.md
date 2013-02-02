@@ -1,6 +1,6 @@
 # a-star
 
-Generic A* algorithm.
+Generic synchronous [A* search algorithm](http://en.wikipedia.org/wiki/A*_search_algorithm).
 
 ## Usage
 
@@ -15,12 +15,27 @@ console.log(path);
 
 ## Documentation
 
-`astar(options)`
+`aStar(options)`
 
 ### Return Value
 
-Returns an array of nodes including start and end, or `null` if no path
-is found.
+Returns an object that looks like this:
+
+```js
+{
+  status: 'success', // one of ['success', 'noPath', 'timeout']
+  path: [startNode, node1, node2, ..., endNode],
+}
+```
+
+If `status` is:
+
+ * `success` - a path was found and `path` is an array of nodes including start
+   and end.
+ * `noPath` - there is no path from start to end. `path` is the path to the
+   closest node to end that could be found.
+ * `timeout` - no path was found in the allotted time. `path` is the path to
+   the closest node that could be found in the allotted time.
 
 ### options accepted
 
