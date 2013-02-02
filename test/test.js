@@ -11,21 +11,6 @@ function arraysEqual(array1, array2) {
 }
 
 /**
- * returns a copy of this array but only including elements that make the
- * provided predicate function return true. Function is passed each item
- * and should return a boolean.
- */
-function arrayFiltered(array, func) {
-  var result = [];
-  for (var i = 0; i < array.length; i++) {
-    var item = array[i];
-    if (func(item)) result.push(item);
-  }
-  return result;
-}
-
-
-/**
  * Simplest example I could think of without being completely trivial.
  * Start at 5 and find a path to 0 along a number line.
  * The solution is [5, 4, 3, 2, 1, 0].
@@ -119,7 +104,7 @@ function testMaze(maze, nodeCount, closestNodeCount) {
     start: start,
     isEnd: function(n) {return n[0] === end[0] && n[1] === end[1];},
     neighbor: function(xy) {
-      return arrayFiltered(planarNeighbors(xy), function(xy) {
+      return planarNeighbors(xy).filter(function(xy) {
         // cell is walkable if it's not a "#" sign
         return maze[xy[1]].charAt(xy[0]) !== "#";
       });
