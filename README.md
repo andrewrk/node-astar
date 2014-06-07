@@ -25,6 +25,7 @@ Returns an object that looks like this:
 {
   status: 'success', // one of ['success', 'noPath', 'timeout']
   path: [startNode, node1, node2, ..., endNode],
+  cost: cost, // cost of path
 }
 ```
 
