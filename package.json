@@ -1,6 +1,6 @@
 {
   "name": "a-star",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Generic synchronous A* search algorithm",
   "main": "index.js",
   "scripts": {
