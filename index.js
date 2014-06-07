@@ -33,6 +33,7 @@ function aStar(params) {
     if (new Date() - startTime > params.timeout) {
       return {
         status: 'timeout',
+        cost: bestNode.g,
         path: reconstructPath(bestNode),
       };
     }
@@ -42,6 +43,7 @@ function aStar(params) {
       // done
       return {
         status: 'success',
+        cost: node.g,
         path: reconstructPath(node),
       };
     }
@@ -88,6 +90,7 @@ function aStar(params) {
   // all the neighbors of every accessible node have been exhausted
   return {
     status: "noPath",
+    cost: bestNode.g,
     path: reconstructPath(bestNode),
   };
 }
