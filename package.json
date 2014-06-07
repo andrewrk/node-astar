@@ -10,8 +10,8 @@
   "author": "Andrew Kelley",
   "license": "BSD",
   "dependencies": {
-    "Set": "~0.4.0",
-    "heap": "~0.2.1",
-    "dict": "~1.1.0"
+    "Set": "^0.4.1",
+    "dict": "^1.4.0",
+    "heap": "^0.2.3"
   }
 }
