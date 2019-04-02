@@ -1,6 +1,6 @@
 {
   "name": "a-star",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Generic synchronous A* search algorithm",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "dependencies": {
     "Set": "^0.4.1",
     "dict": "^1.4.0",
-    "heap": "^0.2.3"
+    "heap": "^0.2.3",
+    "rxjs": "^6.4.0"
   }
 }
