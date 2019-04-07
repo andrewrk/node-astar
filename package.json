@@ -1,12 +1,12 @@
 {
-  "name": "a-star",
+  "name": "@navispeed/async-a-star",
   "version": "0.3.0",
-  "description": "Generic synchronous A* search algorithm",
+  "description": "Generic (a) synchronous A* search algorithm",
   "main": "index.js",
   "scripts": {
     "test": "node test/test.js"
   },
-  "repository": "git://github.com/superjoe30/node-astar.git",
+  "repository": "git://github.com/navispeed/async-node-astar",
   "author": "Andrew Kelley",
   "license": "BSD",
   "dependencies": {
